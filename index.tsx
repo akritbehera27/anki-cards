@@ -247,13 +247,30 @@ const FlashcardViewer: React.FC<{ selectedFile: AppFile }> = ({ selectedFile }) 
   );
 };
 
+// --- Sidebar components need to be hoisted ---
+type TreeItemProps = {
+    node: TreeNode;
+    selectedFile: AppFile | null;
+    onSelectFile: (file: AppFile) => void;
+    depth: number;
+};
 
-const DirectoryItem: React.FC<{
-  node: DirectoryNode;
-  selectedFile: AppFile | null;
-  onSelectFile: (file: AppFile) => void;
-  depth: number;
-}> = ({ node, selectedFile, onSelectFile, depth }) => {
+type DirectoryItemProps = {
+    node: DirectoryNode;
+    selectedFile: AppFile | null;
+    onSelectFile: (file: AppFile) => void;
+    depth: number;
+};
+
+type FileItemProps = {
+    node: FileNode;
+    selectedFile: AppFile | null;
+    onSelectFile: (file: AppFile) => void;
+    depth: number;
+};
+
+
+function DirectoryItem({ node, selectedFile, onSelectFile, depth }: DirectoryItemProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -285,12 +302,7 @@ const DirectoryItem: React.FC<{
   );
 };
 
-const FileItem: React.FC<{
-  node: FileNode;
-  selectedFile: AppFile | null;
-  onSelectFile: (file: AppFile) => void;
-  depth: number;
-}> = ({ node, selectedFile, onSelectFile, depth }) => {
+function FileItem({ node, selectedFile, onSelectFile, depth }: FileItemProps) {
   const isSelected = selectedFile?.path === node.file.path;
   return (
     <div
@@ -306,17 +318,13 @@ const FileItem: React.FC<{
   );
 };
 
-const TreeItem: React.FC<{
-    node: TreeNode;
-    selectedFile: AppFile | null;
-    onSelectFile: (file: AppFile) => void;
-    depth: number;
-}> = ({ node, selectedFile, onSelectFile, depth }) => {
+function TreeItem({ node, selectedFile, onSelectFile, depth }: TreeItemProps) {
     if (node.type === 'directory') {
         return <DirectoryItem node={node} selectedFile={selectedFile} onSelectFile={onSelectFile} depth={depth} />;
     }
     return <FileItem node={node} selectedFile={selectedFile} onSelectFile={onSelectFile} depth={depth} />;
 };
+
 
 const Sidebar: React.FC<{
   fileTree: TreeNode[];
