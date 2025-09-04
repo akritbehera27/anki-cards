@@ -46,12 +46,6 @@ interface DirectoryNode {
 type TreeNode = FileNode | DirectoryNode;
 
 
-// --- From passwords.ts ---
-const VALID_PASSWORDS: string[] = [
-  'top123',
-  'akrit2712',
-];
-
 // --- Icon Components ---
 
 const ChevronLeftIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -863,23 +857,27 @@ const App: React.FC = () => {
     };
     
     const handleLogin = async (password: string): Promise<boolean> => {
-        if (!VALID_PASSWORDS.includes(password)) {
-            return false;
-        }
-
-        const sessionRef = ref(db, `active_sessions/${password}`);
-        
         try {
-            const snapshot = await get(sessionRef);
-            if (snapshot.exists()) {
+            // Step 1: Check if the password is valid by querying Firebase.
+            const passwordRef = ref(db, `valid_passwords/${password}`);
+            const passwordSnapshot = await get(passwordRef);
+            if (!passwordSnapshot.exists()) {
+                console.error("Password is not in the valid_passwords list.");
+                return false; // Password is not valid
+            }
+
+            // Step 2: If password is valid, check for an active session.
+            const sessionRef = ref(db, `active_sessions/${password}`);
+            const sessionSnapshot = await get(sessionRef);
+            if (sessionSnapshot.exists()) {
+                console.error("Session is already active for this password.");
                 return false; // Session already active
             }
 
-            // Tentatively create session lock. onDisconnect will clean it up if browser closes.
+            // Step 3: Create session lock and fetch files.
             await onDisconnect(sessionRef).remove();
             await set(sessionRef, { timestamp: serverTimestamp() });
             
-            // Now, try to fetch the protected files
             setLoggedInPassword(password);
             setIsLoading(true);
 
