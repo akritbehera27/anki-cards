@@ -1,0 +1,5 @@
+Q: What is the quadratic formula used for?
+A: To find the roots of a quadratic equation (ax^2 + bx + c = 0).
+
+Q: Solve for x: 2x + 5 = 15
+A: x = 5

@@ -1,0 +1,5 @@
+Q: What is a derivative in calculus?
+A: It measures the rate at which a function's value changes at a given point.
+
+Q: What is an integral?
+A: It can be interpreted as the area under the curve of a function's graph.
