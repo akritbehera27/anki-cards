@@ -2,7 +2,21 @@ import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react'
 import ReactDOM from 'react-dom/client';
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, get, remove, onDisconnect, serverTimestamp } from "firebase/database";
-import { firebaseConfig } from './firebaseConfig.ts';
+
+// This is a placeholder for your Firebase configuration.
+// 1. Go to your Firebase project settings.
+// 2. In the "General" tab, find your app under "Your apps".
+// 3. Click the gear icon, then "Config" to find your firebaseConfig object.
+// 4. Copy the object and paste it here, replacing this placeholder.
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
 // --- From types.ts ---
 interface FlashcardData {
