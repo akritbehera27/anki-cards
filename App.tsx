@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import FileUpload from './components/FileUpload';
-import Sidebar from './components/Sidebar';
-import FlashcardViewer from './components/FlashcardViewer';
-import type { AppFile, TreeNode, DirectoryNode } from './types';
-import MenuIcon from './components/icons/MenuIcon';
-import FlashcardGenerator from './components/FlashcardGenerator';
-import ArrowUturnLeftIcon from './components/icons/ArrowUturnLeftIcon';
-import Login from './components/Login';
-import { VALID_PASSWORDS } from './passwords';
+import FileUpload from './components/FileUpload.tsx';
+import Sidebar from './components/Sidebar.tsx';
+import FlashcardViewer from './components/FlashcardViewer.tsx';
+import type { AppFile, TreeNode, DirectoryNode } from './types.ts';
+import MenuIcon from './components/icons/MenuIcon.tsx';
+import FlashcardGenerator from './components/FlashcardGenerator.tsx';
+import ArrowUturnLeftIcon from './components/icons/ArrowUturnLeftIcon.tsx';
+import Login from './components/Login.tsx';
+import { VALID_PASSWORDS } from './passwords.ts';
 
 const buildFileTree = (files: AppFile[]): TreeNode[] => {
     const root: DirectoryNode = { type: 'directory', name: 'root', children: [] };

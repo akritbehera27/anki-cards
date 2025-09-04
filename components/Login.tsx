@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import LockClosedIcon from './icons/LockClosedIcon';
-import ArrowUturnLeftIcon from './icons/ArrowUturnLeftIcon';
-import EyeIcon from './icons/EyeIcon';
-import EyeSlashIcon from './icons/EyeSlashIcon';
+import LockClosedIcon from './icons/LockClosedIcon.tsx';
+import ArrowUturnLeftIcon from './icons/ArrowUturnLeftIcon.tsx';
+import EyeIcon from './icons/EyeIcon.tsx';
+import EyeSlashIcon from './icons/EyeSlashIcon.tsx';
 
 interface LoginProps {
   onLogin: (password: string) => Promise<boolean>;

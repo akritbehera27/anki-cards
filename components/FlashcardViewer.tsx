@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Flashcard from './Flashcard';
-import ChevronLeftIcon from './icons/ChevronLeftIcon';
-import ChevronRightIcon from './icons/ChevronRightIcon';
-import ShuffleIcon from './icons/ShuffleIcon';
-import type { AppFile, FlashcardData } from '../types';
+import Flashcard from './Flashcard.tsx';
+import ChevronLeftIcon from './icons/ChevronLeftIcon.tsx';
+import ChevronRightIcon from './icons/ChevronRightIcon.tsx';
+import ShuffleIcon from './icons/ShuffleIcon.tsx';
+import type { AppFile, FlashcardData } from '../types.ts';
 
 interface FlashcardViewerProps {
   selectedFile: AppFile;

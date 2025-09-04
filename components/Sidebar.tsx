@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
-import type { AppFile, DirectoryNode, FileNode, TreeNode } from '../types';
-import FolderIcon from './icons/FolderIcon';
-import FileIcon from './icons/FileIcon';
-import XIcon from './icons/XIcon';
+import type { AppFile, DirectoryNode, FileNode, TreeNode } from '../types.ts';
+import FolderIcon from './icons/FolderIcon.tsx';
+import FileIcon from './icons/FileIcon.tsx';
+import XIcon from './icons/XIcon.tsx';
 
 interface SidebarProps {
   fileTree: TreeNode[];

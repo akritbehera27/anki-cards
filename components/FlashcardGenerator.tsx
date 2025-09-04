@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PlusIcon from './icons/PlusIcon';
-import TrashIcon from './icons/TrashIcon';
+import PlusIcon from './icons/PlusIcon.tsx';
+import TrashIcon from './icons/TrashIcon.tsx';
 
 interface FlashcardGeneratorProps {
   onBack: () => void;
