@@ -35,7 +35,7 @@ const buildFileTree = (files: AppFile[]): TreeNode[] => {
     return root.children;
 };
 
-const USED_PASSWORDS_KEY = 'flashgen_used_passwords';
+const USED_PASSWORDS_KEY = 'kiokucards_used_passwords';
 
 const App: React.FC = () => {
     const [appFiles, setAppFiles] = useState<AppFile[]>([]);

@@ -1,5 +1,5 @@
 {
-  "name": "Flash Gen",
-  "description": "Generate flashcards from your notes with AI. Upload your text files and start studying with Flash Gen.",
+  "name": "Kioku Cards",
+  "description": "Create and study flashcards from your notes. Upload your text files and start learning with Kioku Cards.",
   "requestFramePermissions": []
 }
