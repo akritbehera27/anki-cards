@@ -76,7 +76,7 @@ const FlashcardGenerator: React.FC<FlashcardGeneratorProps> = ({ onBack }) => {
             </svg>
           </button>
           <div className="text-center flex-1">
-              <h1 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100">Kioku Cards</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-slate-100">Anki Cards</h1>
               <p className="text-md text-slate-600 dark:text-slate-400 mt-1">Create a flashcard file to use with the app.</p>
           </div>
         </div>

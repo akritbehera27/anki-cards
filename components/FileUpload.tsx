@@ -114,7 +114,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFilesChange, onGenerateClick,
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-start bg-slate-50 dark:bg-slate-900 p-4 pt-24">
         <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-100">Kioku Cards</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-100">Anki Cards</h1>
             <p className="text-lg text-slate-600 dark:text-slate-400 mt-2">Your digital flashcard companion.</p>
         </div>
       <div 
