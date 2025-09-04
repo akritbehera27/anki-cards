@@ -1,5 +1,8 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, get, remove, onDisconnect, serverTimestamp } from "firebase/database";
+import { firebaseConfig } from './firebaseConfig.ts';
 
 // --- From types.ts ---
 interface FlashcardData {
@@ -799,8 +802,6 @@ const buildFileTree = (files: AppFile[]): TreeNode[] => {
     return root.children;
 };
 
-const USED_PASSWORDS_KEY = 'ankicards_used_passwords';
-
 const App: React.FC = () => {
     const [appFiles, setAppFiles] = useState<AppFile[]>([]);
     const [selectedFile, setSelectedFile] = useState<AppFile | null>(null);
@@ -808,6 +809,10 @@ const App: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentView, setCurrentView] = useState<'upload' | 'generate' | 'login'>('upload');
     const [loggedInPassword, setLoggedInPassword] = useState<string | null>(null);
+
+    // Initialize Firebase and memoize the instance
+    const app = useMemo(() => initializeApp(firebaseConfig), []);
+    const db = useMemo(() => getDatabase(app), [app]);
 
     const handleFilesChange = async (fileList: FileList) => {
         setIsLoading(true);
@@ -844,12 +849,23 @@ const App: React.FC = () => {
     };
     
     const handleLogin = async (password: string): Promise<boolean> => {
-        const usedPasswords = JSON.parse(sessionStorage.getItem(USED_PASSWORDS_KEY) || '[]');
+        if (!VALID_PASSWORDS.includes(password)) {
+            return false;
+        }
+
+        const sessionRef = ref(db, `active_sessions/${password}`);
         
-        if (VALID_PASSWORDS.includes(password) && !usedPasswords.includes(password)) {
-            const newUsedPasswords = [...usedPasswords, password];
-            sessionStorage.setItem(USED_PASSWORDS_KEY, JSON.stringify(newUsedPasswords));
+        try {
+            const snapshot = await get(sessionRef);
+            if (snapshot.exists()) {
+                return false; // Session already active
+            }
+
+            // Tentatively create session lock. onDisconnect will clean it up if browser closes.
+            await onDisconnect(sessionRef).remove();
+            await set(sessionRef, { timestamp: serverTimestamp() });
             
+            // Now, try to fetch the protected files
             setLoggedInPassword(password);
             setIsLoading(true);
 
@@ -876,25 +892,31 @@ const App: React.FC = () => {
                 setAppFiles(loadedFiles);
                 setSelectedFile(null);
                 setCurrentView('upload');
+                return true; // Login fully successful
+
             } catch (error) {
                 console.error("Error accessing PNotes:", error);
-                const usedPasswords = JSON.parse(sessionStorage.getItem(USED_PASSWORDS_KEY) || '[]');
-                const newUsedPasswords = usedPasswords.filter((p: string) => p !== password);
-                sessionStorage.setItem(USED_PASSWORDS_KEY, JSON.stringify(newUsedPasswords));
+                // ROLLBACK: If file fetch fails, remove the Firebase session lock
+                await onDisconnect(sessionRef).cancel(); // Cancel the cleanup hook
+                await remove(sessionRef); // Manually remove the lock
                 setLoggedInPassword(null);
+                return false;
             } finally {
                 setIsLoading(false);
             }
-            return true;
+
+        } catch(error) {
+            console.error("Firebase login check error:", error);
+            return false;
         }
-        return false;
     };
 
-    const handleReturnToHome = () => {
+    const handleReturnToHome = async () => {
         if (loggedInPassword) {
-            const usedPasswords = JSON.parse(sessionStorage.getItem(USED_PASSWORDS_KEY) || '[]');
-            const newUsedPasswords = usedPasswords.filter((p: string) => p !== loggedInPassword);
-            sessionStorage.setItem(USED_PASSWORDS_KEY, JSON.stringify(newUsedPasswords));
+            const sessionRef = ref(db, `active_sessions/${loggedInPassword}`);
+            // Cancel the onDisconnect hook before manually removing the session
+            await onDisconnect(sessionRef).cancel();
+            await remove(sessionRef);
             setLoggedInPassword(null);
         }
         setAppFiles([]);
